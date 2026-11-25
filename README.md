@@ -1,10 +1,16 @@
 # Standup Tracker
 
+![Standup Tracker Overview tab with demo data: KPI tiles, throughput chart, goal progress, status mix donut, blocker burn-down and check-in calendar](docs/overview.png)
+
+**Live app:** <https://stephen-carras.github.io/standup-tracker/>
+
 A personal weekly dashboard for people who need to show their manager what they are working on. Plan your day in under a minute, watch the week take shape in charts, then export a clean read-only report.
 
 One HTML file. No backend, no build step, no account. Your data stays in your browser.
 
-**Try the output:** open [`examples/sample-snapshot.html`](examples/sample-snapshot.html) to see exactly what a manager receives.
+**Try it now:** open the [live app](https://stephen-carras.github.io/standup-tracker/). It runs entirely in your browser, and nothing you type is sent anywhere.
+
+**See the output:** open [`examples/sample-snapshot.html`](examples/sample-snapshot.html) to see exactly what a manager receives.
 
 ## Quick start
 
@@ -14,7 +20,7 @@ cd standup-tracker
 open index.html          # or double-click it
 ```
 
-Prefer a local server? Run `npm start` and visit <http://localhost:8080>.
+Prefer a local server? Run `npm start` and visit <http://localhost:8080>. This runs `python3 -m http.server 8080`, a plain static file server for the repo folder, so it needs **Python 3** (Node is not involved). Stop it with `Ctrl+C`. No `npm install` is needed.
 
 The first load shows demo data so every chart has something in it. Use **Clear demo** when you are ready to start fresh, then add your name, role, manager and goals in **Settings**.
 
@@ -72,18 +78,21 @@ The included workflow runs the tests and publishes `index.html` to Pages on ever
 
 1. Push the repo to GitHub.
 2. In **Settings → Pages**, set **Source** to **GitHub Actions**.
-3. Push to `main`. Your tracker is live at `https://<you>.github.io/<repo>/`.
+3. Push to `main`. Your tracker is live at `https://<you>.github.io/<repo>/`. For example, this repo deploys to <https://stephen-carras.github.io/standup-tracker/>.
 
 Hosting only changes where the page loads from. Each person's data still lives in their own browser.
 
 ## Development
 
 ```bash
-npm test             # 11 tests, no dependencies, Node 18+
+npm test             # 12 tests, no dependencies, Node 18+
 npm run example      # regenerate examples/sample-snapshot.html
+npm start            # static server on :8080 (Python 3)
 ```
 
-The tests load `index.html`'s script against a small stubbed DOM (`tests/boot.js`), so they run anywhere Node does. They cover rendering of every tab, the private-item guarantee, quick-add parsing, create/edit/delete for every record type, carry-forward, backups and the empty state.
+See [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+
+The tests load `index.html`'s script against a small stubbed DOM (`tests/boot.js`), so they run anywhere Node does. They cover rendering of every tab, the private-item guarantee, quick-add parsing, create/edit/delete for every record type, carry-forward, backups, the empty state and snapshot downloads.
 
 The whole app is `index.html`. There is no framework. Charts are hand-built SVG.
 
