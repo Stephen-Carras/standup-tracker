@@ -1,0 +1,13 @@
+{
+  "name": "standup-tracker",
+  "version": "1.0.0",
+  "description": "A personal weekly standup dashboard that exports a read-only report for your manager. One HTML file, no backend, no build.",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test",
+    "example": "node scripts/build-example.js",
+    "start": "python3 -m http.server 8080"
+  },
+  "engines": { "node": ">=18" }
+}
