@@ -176,3 +176,40 @@ test('download uses the platform save path when present, and the browser fallbac
   t2.click('downloadSnapshot');
   assert.match(t2.toast(), /Snapshot download started/);
 });
+
+test('PowerPoint export is a valid zip, includes the 4-square, and never contains private items', () => {
+  const t = boot();
+  const S = t.api.getState();
+  const secret = S.entries.find((e) => e.private);
+  S.asks.push({ id: 'pa', text: 'SECRET-ASK', who: 'x', dir: 'waiting', due: '', done: false, created: t.api.TODAY, private: true });
+  S.wins.push({ id: 'pw', date: t.api.TODAY, text: 'SECRET-WIN', impact: '', goal: '', private: true });
+  S.blockers.push({ id: 'pb', text: 'SECRET-BLOCKER', severity: 'high', owner: '', opened: t.api.TODAY, resolved: null, private: true });
+  const bytes = t.api.buildPptx(t.api.UI.week);
+  assert.deepEqual(Array.from(bytes.slice(0, 4)), [0x50, 0x4b, 0x03, 0x04], 'zip signature');
+  const text = Buffer.from(bytes).toString('utf8');
+  for (const part of ['[Content_Types].xml', 'ppt/presentation.xml', 'ppt/slides/slide1.xml', 'ppt/slides/slide2.xml', 'ppt/theme/theme1.xml']) {
+    assert.ok(text.includes(part), part + ' present');
+  }
+  assert.match(text, /At a glance/);
+  assert.match(text, /Alex Rivera/);
+  assert.doesNotMatch(text, /SECRET-/);
+  assert.ok(!text.includes(secret.text), 'private item text absent');
+  const quad = t.api.fourSquare(t.api.compute(t.api.UI.week, true), t.api.UI.inc);
+  assert.doesNotMatch(quad, /SECRET-/);
+  assert.ok(!quad.includes(secret.text));
+});
+
+test('PowerPoint save uses the platform path with a .pptx name, and PDF button guards the sandbox', async () => {
+  const t = boot();
+  let saved = null;
+  t.sandbox.claude = { use: async (n) => (n === 'downloads' ? { save: async (r) => { saved = r; return { status: 'saved' }; } } : null) };
+  t.click('downloadPptx');
+  await new Promise((r) => setTimeout(r, 10));
+  assert.match(saved.filename, /^weekly-update-alex-rivera-\d{4}-\d{2}-\d{2}\.pptx$/);
+  assert.ok(saved.data, 'has data');
+  t.click('printPdf');
+  assert.match(t.toast(), /Printing is blocked in this preview/);
+  const t2 = boot();
+  t2.click('printPdf');
+  assert.match(t2.toast(), /Could not open the print dialog/);
+});

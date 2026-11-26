@@ -32,7 +32,7 @@ The first load shows demo data so every chart has something in it. Use **Clear d
 | **Check-in** | Yesterday, today, blockers and goals on one screen. Unfinished items carry forward automatically. |
 | **Week** | Everything shipped and in progress for the selected week, blocker aging, and auto-written highlights. |
 | **Wins & asks** | A wins log for performance reviews, plus who you are waiting on and what you owe others, with due-date pills. |
-| **Report** | The manager view. Choose what to include, then download a snapshot or copy a text summary. |
+| **Report** | The manager view. Choose what to include, then export it as a snapshot, PDF or PowerPoint, or copy a text summary. |
 
 Numbers and percentages are shown as color-coded pills, so green, amber and red read at a glance.
 
@@ -61,10 +61,12 @@ Fix empty-state bug #onboarding !a ~60 @2h
 1. Open the **Report** tab and pick the week.
 2. Tick or untick **Hours & throughput**, **Blockers**, **Asks** and **Wins**.
 3. Click **Download snapshot (.html)** and send the file by email or Slack. It is a single read-only page that opens offline in any browser. No scripts, no links back to your data.
-4. For a PDF, open the snapshot and use your browser's Print. The layout is print-ready.
+4. Need a different format? **Save as PDF** opens your browser's print dialog with a print-ready layout (choose Save as PDF). **PowerPoint** downloads a 4 to 5 slide `.pptx`: title and KPIs, a four-square summary (Shipped, In progress, Blocked & waiting, Wins), detail, risks and asks, and wins with next week. Both follow your include toggles and leave out private items. Both are generated in your browser with no libraries and no uploads.
 5. For a quick message, click **Copy text summary**.
 
-**Private items are excluded everywhere.** Mark an item, blocker, ask or win as private and it never appears in the report, the snapshot or the text summary. The Report tab shows exactly what will be shared.
+![First two PowerPoint slides from the demo data: a title slide with KPI tiles and highlights, then the four-square summary of Shipped, In progress, Blocked & waiting and Wins](docs/powerpoint-preview.png)
+
+**Private items are excluded everywhere.** Mark an item, blocker, ask or win as private and it never appears in the report, the snapshot, the PDF, the PowerPoint or the text summary. The Report tab shows exactly what will be shared.
 
 ## Your data
 
@@ -85,14 +87,14 @@ Hosting only changes where the page loads from. Each person's data still lives i
 ## Development
 
 ```bash
-npm test             # 12 tests, no dependencies, Node 18+
+npm test             # 14 tests, no dependencies, Node 18+
 npm run example      # regenerate examples/sample-snapshot.html
 npm start            # static server on :8080 (Python 3)
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
-The tests load `index.html`'s script against a small stubbed DOM (`tests/boot.js`), so they run anywhere Node does. They cover rendering of every tab, the private-item guarantee, quick-add parsing, create/edit/delete for every record type, carry-forward, backups, the empty state and snapshot downloads.
+The tests load `index.html`'s script against a small stubbed DOM (`tests/boot.js`), so they run anywhere Node does. They cover rendering of every tab, the private-item guarantee, quick-add parsing, create/edit/delete for every record type, carry-forward, backups, the empty state, snapshot downloads and PDF and PowerPoint export.
 
 The whole app is `index.html`. There is no framework. Charts are hand-built SVG.
 

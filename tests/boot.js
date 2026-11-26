@@ -16,7 +16,7 @@ function boot() {
   const handlers = {};
   const store = {};
   const sandbox = {
-    console, Math, Date, JSON, Object, Array, String, Number, setTimeout, clearTimeout,
+    console, TextEncoder, Uint8Array, Math, Date, JSON, Object, Array, String, Number, setTimeout, clearTimeout,
     Blob: class {}, URL: { createObjectURL() { return 'blob:x'; }, revokeObjectURL() {} }, FileReader: class {},
     localStorage: { getItem: (k) => (k in store ? store[k] : null), setItem: (k, v) => { store[k] = v; } },
     matchMedia: () => ({ matches: false }),
