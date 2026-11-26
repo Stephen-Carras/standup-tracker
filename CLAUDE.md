@@ -7,12 +7,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **The whole app is `index.html`**: vanilla JS/HTML/CSS. No framework, no bundler, no build step, no runtime dependencies. Do not introduce any.
 - **No backend and no network calls.** Data lives only in the browser's `localStorage` (keys `standup.solo.v1` for state, `standup.solo.ui` for theme and report toggles). The only external request is the Google Fonts stylesheet, which is optional (system fonts are the fallback). Do not add `fetch`, XHR, analytics or sync.
 - **Private items never leave the owner's view.** Anything with `private: true` (entries, blockers, asks, wins) must never appear in the manager report, the downloaded snapshot or the copied text summary. Test 2 in `tests/app.test.js` enforces this; keep it passing and extend it whenever you add a new shared output or record type.
-- **`npm test` must pass with all 12 tests.** CI (`.github/workflows/pages.yml`) runs it on every push and PR and only deploys to GitHub Pages from `main` after it passes.
+- **`npm test` must pass with all 14 tests.** CI (`.github/workflows/pages.yml`) runs it on every push and PR and only deploys to GitHub Pages from `main` after it passes.
 
 ## Commands
 
 ```bash
-npm test                                   # node --test, 12 tests, Node 18+, no npm install needed
+npm test                                   # node --test, 14 tests, Node 18+, no npm install needed
 node --test --test-name-pattern="quick-add" # run one test by name
 npm run example                            # regenerate examples/sample-snapshot.html from demo data
 npm start                                  # python3 -m http.server 8080 (needs Python 3, not Node)
